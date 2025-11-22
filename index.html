@@ -3,21 +3,1050 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
+    <title>Gerador de Sobreaviso DRV/DEIC</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  /* RGB versions for opacity control */
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+  select.form-control {
+    background-image: var(--select-caret-dark);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  border: none;
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+textarea.form-control {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  resize: vertical;
+}
+
+select.form-control {
+  padding: var(--space-8) var(--space-12);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: var(--select-caret-light);
+  background-repeat: no-repeat;
+  background-position: right var(--space-12) center;
+  background-size: 16px;
+  padding-right: var(--space-32);
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  outline: var(--focus-outline);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-8);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.form-group {
+  margin-bottom: var(--space-16);
+}
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.card__body {
+  padding: var(--space-16);
+}
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: var(--space-24) var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-lg);
+  }
+}
+
+        /* Custom Styles */
+        .app-header {
+            text-align: center;
+            margin-bottom: var(--space-32);
         }
-        h1 {
-            color: #333;
+
+        .app-header h1 {
+            margin-bottom: var(--space-8);
+        }
+
+        .app-header p {
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .input-section {
+            margin-bottom: var(--space-24);
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--space-12);
+            flex-wrap: wrap;
+        }
+
+        .output-section {
+            margin-top: var(--space-24);
+        }
+
+        .sobreaviso-output {
+            background-color: var(--color-surface);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-base);
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: var(--space-12) var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+            font-size: var(--font-size-sm);
+        }
+
+        .alert-success {
+            background-color: rgba(var(--color-success-rgb), 0.15);
+            color: var(--color-success);
+            border: 1px solid rgba(var(--color-success-rgb), 0.25);
+        }
+
+        .alert-info {
+            background-color: rgba(var(--color-info-rgb), 0.15);
+            color: var(--color-info);
+            border: 1px solid rgba(var(--color-info-rgb), 0.25);
+        }
+
+        .btn--blue {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn--blue:hover {
+            background: #2563EB;
+        }
+
+        .btn--green {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn--green:hover {
+            background: #20BA5A;
+        }
+
+        .btn--gray {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn--gray:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .date-selector-wrapper {
+            margin-bottom: var(--space-16);
+        }
+
+        .stats {
+            display: flex;
+            gap: var(--space-16);
+            margin-bottom: var(--space-16);
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            padding: var(--space-16);
+            background-color: var(--color-bg-1);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-card-border);
+        }
+
+        .stat-card__label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-card__value {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: var(--space-8);
+            margin-bottom: var(--space-24);
+            border-bottom: 2px solid var(--color-card-border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: var(--space-12) var(--space-16);
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-standard);
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-text);
+            background: var(--color-secondary);
+        }
+
+        .tab-btn--active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .search-section {
+            margin-bottom: var(--space-24);
+        }
+
+        .person-day {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .person-day:last-child {
+            border-bottom: none;
+        }
+
+        .person-day-header {
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-8);
+            color: var(--color-primary);
+        }
+
+        .person-name-highlight {
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
         }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Este é o início do seu site no GitHub.</p>
+    <div class="container">
+        <div class="app-header">
+            <h1>📋 Gerador de Sobreaviso DRV/DEIC</h1>
+            <p>Busque por data ou por pessoa</p>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--space-8);">💡 Use o botão "Copiar Link" para compartilhar com seus colegas</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button id="tabDate" class="tab-btn tab-btn--active">📅 Buscar por Data</button>
+            <button id="tabPerson" class="tab-btn">👤 Buscar por Pessoa</button>
+        </div>
+
+        <!-- Date Selector Section -->
+        <div id="dateSelectorSection" class="search-section">
+            <div class="card">
+                <div class="card__body">
+                    <div class="form-group date-selector-wrapper">
+                        <label class="form-label" for="dateSelect">Selecione a Data</label>
+                        <select id="dateSelect" class="form-control">
+                            <option value="">Selecione uma data...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Person Selector Section -->
+        <div id="personSelectorSection" class="search-section hidden">
+            <div class="card">
+                <div class="card__body">
+                    <div class="form-group">
+                        <label class="form-label" for="personSelect">Selecione a Pessoa</label>
+                        <select id="personSelect" class="form-control">
+                            <option value="">Selecione uma pessoa...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="outputSection" class="output-section hidden">
+            <div class="card">
+                <div class="card__body">
+                    <div id="alertContainer"></div>
+                    <div class="button-group" style="margin-bottom: var(--space-16);">
+                        <button id="copyBtn" class="btn btn--blue">📋 Copiar Texto</button>
+                        <button id="copyLinkBtn" class="btn btn--primary">🔗 Copiar Link</button>
+                        <button id="whatsappBtn" class="btn btn--green">📱 Enviar no WhatsApp</button>
+                        <button id="clearOutputBtn" class="btn btn--gray">🗑️ Limpar</button>
+                    </div>
+                    <div id="sobravisoOutput" class="sobreaviso-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data structures
+        const phoneMapping = {
+            'Cau': 'Insp. Acauã (51) 986859065',
+            'Piazza': 'Esc. Fernanda Piazza (51) 993605744',
+            'Cristiano': 'Insp. Cristiano Soletti (51) 995659880',
+            'Teresinha': 'Insp. Teresinha Carivali (51) 999829606',
+            'Thiago': 'Insp. Thiago Meireles (79) 988080613',
+            'César': 'Esc. César da Costa (51) 998911160',
+            'Vanessa': 'Insp. Vanessa Trindade (55) 984278960',
+            'Bona': 'Insp. Juliano Bonacina (51) 989276060',
+            'Gui Mello': 'Insp. Guilherme Mello (51) 981354933',
+            'Tais': 'Insp. Tais Boesing (51) 980549435',
+            'Jeff': 'Esc. Jefferson Antoniol (24) 981002933',
+            'Luciana': 'Esc. Luciana Bortoli (51) 993935552',
+            'Edna': 'Insp. Edna Moraes (53) 981339654',
+            'Saraiva': 'Esc. Anderson Saraiva (51) 993879343',
+            'Loss': 'Insp. Lucas Loss (51) 991055571',
+            'Brozoza': 'Insp. Alexandre Brozoza (51) 996500506',
+            'Dago': 'Esc. Dagoberto O. das Virgens (51) 999920066',
+            'Thássia': 'Insp. Thássia Guterres (51) 996499862',
+            'Juliana': 'Insp. Juliana Tremper (51) 993337587',
+            'Cátia': 'Esc. Cátia Fortunato (51) 985744501',
+            'Melo': 'Insp. Edmilson Melo (51) 983190815'
+        };
+
+        const peopleList = [
+            { label: 'Insp. Acauã', key: 'Cau' },
+            { label: 'Esc. Fernanda Piazza', key: 'Piazza' },
+            { label: 'Insp. Cristiano Soletti', key: 'Cristiano' },
+            { label: 'Insp. Teresinha Carivali', key: 'Teresinha' },
+            { label: 'Insp. Thiago Meireles', key: 'Thiago' },
+            { label: 'Esc. César da Costa', key: 'César' },
+            { label: 'Insp. Vanessa Trindade', key: 'Vanessa' },
+            { label: 'Insp. Juliano Bonacina', key: 'Bona' },
+            { label: 'Insp. Guilherme Mello', key: 'Gui Mello' },
+            { label: 'Insp. Tais Boesing', key: 'Tais' },
+            { label: 'Esc. Jefferson Antoniol', key: 'Jeff' },
+            { label: 'Esc. Luciana Bortoli', key: 'Luciana' },
+            { label: 'Insp. Edna Moraes', key: 'Edna' },
+            { label: 'Esc. Anderson Saraiva', key: 'Saraiva' },
+            { label: 'Insp. Lucas Loss', key: 'Loss' },
+            { label: 'Insp. Alexandre Brozoza', key: 'Brozoza' },
+            { label: 'Esc. Dagoberto O. das Virgens', key: 'Dago' },
+            { label: 'Insp. Thássia Guterres', key: 'Thássia' },
+            { label: 'Insp. Juliana Tremper', key: 'Juliana' },
+            { label: 'Esc. Cátia Fortunato', key: 'Cátia' },
+            { label: 'Insp. Edmilson Melo', key: 'Melo' }
+        ];
+
+        const scheduleData = {
+            '01/11/2025': ['Cristiano', 'Vanessa', 'Thiago'],
+            '02/11/2025': ['Cristiano', 'Vanessa', 'Thiago'],
+            '03/11/2025': ['Piazza', 'César', 'Vanessa'],
+            '04/11/2025': ['Bona', 'Vanessa', 'Saraiva'],
+            '05/11/2025': ['Dago', 'Thássia', 'Thiago'],
+            '06/11/2025': ['Jeff', 'Teresinha', 'Saraiva'],
+            '07/11/2025': ['Cristiano', 'Teresinha', 'Thiago'],
+            '08/11/2025': ['Jeff', 'Juliana', 'Tais'],
+            '09/11/2025': ['Jeff', 'Luciana', 'Edna'],
+            '10/11/2025': ['Gui Mello', 'Bona', 'Tais'],
+            '11/11/2025': ['Brozoza', 'Loss', 'Saraiva'],
+            '12/11/2025': ['Cau', 'Luciana', 'Edna'],
+            '13/11/2025': ['Melo', 'Cátia', 'Jeff'],
+            '14/11/2025': ['Piazza', 'Bona', 'Saraiva'],
+            '15/11/2025': ['Gui Mello', 'Thássia', 'Saraiva'],
+            '16/11/2025': ['Gui Mello', 'Loss', 'Saraiva'],
+            '17/11/2025': ['César', 'Teresinha', 'Jeff'],
+            '18/11/2025': ['Dago', 'Cátia', 'Edna'],
+            '19/11/2025': ['Jeff', 'Thássia', 'Saraiva'],
+            '20/11/2025': ['Cristiano', 'Juliana', 'Thiago'],
+            '21/11/2025': ['Gui Mello', 'Melo', 'Thiago'],
+            '22/11/2025': ['Brozoza', 'Loss', 'Thiago'],
+            '23/11/2025': ['Brozoza', 'Loss', 'Thiago'],
+            '24/11/2025': ['Cau', 'Luciana', 'Saraiva'],
+            '25/11/2025': ['Brozoza', 'Loss', 'Vanessa'],
+            '26/11/2025': ['Melo', 'Vanessa', 'Jeff'],
+            '27/11/2025': ['Piazza', 'Gui Mello', 'Tais'],
+            '28/11/2025': ['César', 'Juliana', 'Vanessa'],
+            '29/11/2025': ['Cau', 'Luciana', 'Edna'],
+            '30/11/2025': ['Cau', 'Juliana', 'Edna']
+        };
+
+        // DOM elements
+        const tableInput = document.getElementById('tableInput');
+        const processBtn = document.getElementById('processBtn');
+        const loadExampleBtn = document.getElementById('loadExampleBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const dateSelect = document.getElementById('dateSelect');
+        const personSelect = document.getElementById('personSelect');
+        const dateSelectorSection = document.getElementById('dateSelectorSection');
+        const personSelectorSection = document.getElementById('personSelectorSection');
+        const tabDate = document.getElementById('tabDate');
+        const tabPerson = document.getElementById('tabPerson');
+        const sobravisoOutput = document.getElementById('sobravisoOutput');
+        const copyBtn = document.getElementById('copyBtn');
+        const outputSection = document.getElementById('outputSection');
+        const alertContainer = document.getElementById('alertContainer');
+        const statsSection = document.getElementById('statsSection');
+        const totalRecords = document.getElementById('totalRecords');
+        const periodRange = document.getElementById('periodRange');
+
+        // Functions
+        function getFullNameAndPhone(shortName) {
+            return phoneMapping[shortName] || `${shortName} (51) 980549435`;
+        }
+
+        function generateSobreaviso(date, people) {
+            const sa01 = getFullNameAndPhone(people[0]);
+            const sa02 = getFullNameAndPhone(people[1]);
+            const nac = getFullNameAndPhone(people[2]);
+
+            return `*Sobreaviso DRV/DEIC*
+Data: ${date}
+
+${sa01}
+${sa02}
+
+NAC:
+${nac}
+
+Assuntos gerais e atendimento ao público - WhatsApp Secretaria:
+(51) 984044887
+
+Chefe de SI:
+Com. Bruna Caldeira 51 99139-9403
+
+Autoridade Policial:
+Delegada Jeiselaure Rocha de Souza (51) 99145-8919`;
+        }
+
+        function normalizeKey(name) {
+            const nameMap = {
+                'CRISTIANO': 'Cristiano',
+                'VANESSA': 'Vanessa',
+                'PIAZZA': 'Piazza',
+                'CESAR': 'César',
+                'BONA': 'Bona',
+                'DAGO': 'Dago',
+                'THÁSSIA': 'Thássia',
+                'JEFF': 'Jeff',
+                'TERESINHA': 'Teresinha',
+                'JULIANA': 'Juliana',
+                'LUCIANA': 'Luciana',
+                'GUI MELLO': 'Gui Mello',
+                'BROZOZA': 'Brozoza',
+                'LOSS': 'Loss',
+                'MELO': 'Melo',
+                'Cátia': 'Cátia',
+                'Cau': 'Cau'
+            };
+            return nameMap[name] || name;
+        }
+
+        function getDayOfWeek(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            const date = new Date(year, month - 1, day);
+            const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            return days[date.getDay()];
+        }
+
+        function generatePersonSchedule(personKey) {
+            const dates = Object.keys(scheduleData).sort((a, b) => {
+                const [dayA, monthA, yearA] = a.split('/');
+                const [dayB, monthB, yearB] = b.split('/');  
+                return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
+            });
+
+            const personDays = [];
+            
+            dates.forEach(date => {
+                const people = scheduleData[date];
+                const normalizedPeople = people.map(p => normalizeKey(p));
+                
+                if (normalizedPeople.includes(personKey)) {
+                    const colleagues = normalizedPeople.filter(p => p !== personKey);
+                    personDays.push({
+                        date: date,
+                        dayOfWeek: getDayOfWeek(date),
+                        colleagues: colleagues
+                    });
+                }
+            });
+
+            if (personDays.length === 0) {
+                return 'Esta pessoa não está escalada em nenhum dia de novembro.';
+            }
+
+            const personInfo = getFullNameAndPhone(personKey);
+            let output = `*Escala de Sobreaviso - ${personInfo.split('(')[0].trim()}*\n`;
+            output += `Total de dias: ${personDays.length}\n\n`;
+            output += '═'.repeat(50) + '\n\n';
+
+            personDays.forEach((day, index) => {
+                output += `📅 ${day.date} - ${day.dayOfWeek}\n\n`;
+                output += `*${personInfo}*\n\n`;
+                output += 'Colegas de Sobreaviso:\n';
+                day.colleagues.forEach(colleague => {
+                    output += `${getFullNameAndPhone(colleague)}\n`;
+                });
+                
+                if (index < personDays.length - 1) {
+                    output += '\n' + '-'.repeat(50) + '\n\n';
+                }
+            });
+
+            return output;
+        }
+
+        function populateDateSelector() {
+            dateSelect.innerHTML = '<option value="">Selecione uma data...</option>';
+            
+            const dates = Object.keys(scheduleData).sort((a, b) => {
+                const [dayA, monthA, yearA] = a.split('/');
+                const [dayB, monthB, yearB] = b.split('/');
+                return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
+            });
+            
+            dates.forEach(date => {
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                dateSelect.appendChild(option);
+            });
+        }
+
+        function populatePersonSelector() {
+            personSelect.innerHTML = '<option value="">Selecione uma pessoa...</option>';
+            
+            peopleList.forEach(person => {
+                const option = document.createElement('option');
+                option.value = person.key;
+                option.textContent = person.label;
+                personSelect.appendChild(option);
+            });
+        }
+
+        function switchTab(mode) {
+            if (mode === 'date') {
+                tabDate.classList.add('tab-btn--active');
+                tabPerson.classList.remove('tab-btn--active');
+                dateSelectorSection.classList.remove('hidden');
+                personSelectorSection.classList.add('hidden');
+                sobravisoOutput.textContent = '';
+                outputSection.classList.add('hidden');
+            } else {
+                tabPerson.classList.add('tab-btn--active');
+                tabDate.classList.remove('tab-btn--active');
+                personSelectorSection.classList.remove('hidden');
+                dateSelectorSection.classList.add('hidden');
+                sobravisoOutput.textContent = '';
+                outputSection.classList.add('hidden');
+            }
+        }
+
+        function initializeApp() {
+            populateDateSelector();
+            populatePersonSelector();
+            dateSelectorSection.classList.remove('hidden');
+            
+            // Check for URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const dateParam = urlParams.get('date');
+            
+            if (dateParam && scheduleData[dateParam]) {
+                // If valid date in URL, select it and show content
+                dateSelect.value = dateParam;
+                const people = scheduleData[dateParam];
+                const formattedText = generateSobreaviso(dateParam, people);
+                sobravisoOutput.textContent = formattedText;
+                outputSection.classList.remove('hidden');
+            } else {
+                // Try to show today's date or first available date
+                const today = new Date();
+                const todayStr = String(today.getDate()).padStart(2, '0') + '/' + 
+                                String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                                today.getFullYear();
+                
+                if (scheduleData[todayStr]) {
+                    dateSelect.value = todayStr;
+                    const people = scheduleData[todayStr];
+                    const formattedText = generateSobreaviso(todayStr, people);
+                    sobravisoOutput.textContent = formattedText;
+                    outputSection.classList.remove('hidden');
+                }
+            }
+        }
+
+        function showAlert(message, type = 'success') {
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 3000);
+        }
+
+        // Event Listeners
+
+        tabDate.addEventListener('click', () => {
+            switchTab('date');
+        });
+
+        tabPerson.addEventListener('click', () => {
+            switchTab('person');
+        });
+
+        personSelect.addEventListener('change', (e) => {
+            const selectedPerson = e.target.value;
+            
+            if (selectedPerson === '') {
+                outputSection.classList.add('hidden');
+                sobravisoOutput.textContent = '';
+                return;
+            }
+
+            const formattedText = generatePersonSchedule(selectedPerson);
+            sobravisoOutput.textContent = formattedText;
+            outputSection.classList.remove('hidden');
+        });
+
+        dateSelect.addEventListener('change', (e) => {
+            const selectedDate = e.target.value;
+            
+            if (selectedDate === '') {
+                outputSection.classList.add('hidden');
+                sobravisoOutput.textContent = 'Selecione uma data para gerar o sobreaviso';
+                return;
+            }
+
+            const people = scheduleData[selectedDate];
+            const formattedText = generateSobreaviso(selectedDate, people);
+            sobravisoOutput.textContent = formattedText;
+            outputSection.classList.remove('hidden');
+            
+            // Update URL without reloading page
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('date', selectedDate);
+            window.history.pushState({}, '', newUrl);
+        });
+
+        copyBtn.addEventListener('click', async () => {
+            const text = sobravisoOutput.textContent;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showAlert('Texto copiado para a área de transferência!', 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert('Texto copiado para a área de transferência!', 'success');
+                } catch (err) {
+                    showAlert('Erro ao copiar texto.', 'info');
+                }
+                document.body.removeChild(textarea);
+            }
+        });
+
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        whatsappBtn.addEventListener('click', () => {
+            const text = sobravisoOutput.textContent;
+            
+            if (!text) {
+                showAlert('Nenhum texto para enviar.', 'info');
+                return;
+            }
+            
+            // Check which tab is active
+            const selectedDate = dateSelect.value;
+            const selectedPerson = personSelect.value;
+            
+            let shareableLink = '';
+            if (tabDate.classList.contains('tab-btn--active') && selectedDate) {
+                shareableLink = `${window.location.origin}${window.location.pathname}?date=${encodeURIComponent(selectedDate)}`;
+            }
+            
+            // Add link to the text if available
+            let textToSend = text;
+            if (shareableLink) {
+                textToSend = `${text}\n\n🔗 Link para acessar: ${shareableLink}`;
+            }
+            
+            // Encode the text for URL
+            const encodedText = encodeURIComponent(textToSend);
+            const whatsappUrl = `https://web.whatsapp.com/send?text=${encodedText}`;
+            
+            // Open WhatsApp Web in a new tab
+            window.open(whatsappUrl, '_blank');
+            showAlert('Abrindo WhatsApp Web...', 'success');
+        });
+
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const clearOutputBtn = document.getElementById('clearOutputBtn');
+        
+        copyLinkBtn.addEventListener('click', async () => {
+            // Check which tab is active
+            const selectedDate = dateSelect.value;
+            const selectedPerson = personSelect.value;
+            
+            // Only date mode supports shareable links
+            if (tabDate.classList.contains('tab-btn--active')) {
+                if (!selectedDate) {
+                    showAlert('Selecione uma data primeiro.', 'info');
+                    return;
+                }
+                
+                // Create shareable link with date parameter
+                const shareableLink = `${window.location.origin}${window.location.pathname}?date=${encodeURIComponent(selectedDate)}`;
+                
+                try {
+                    await navigator.clipboard.writeText(shareableLink);
+                    showAlert('Link copiado! Seus colegas poderão ver o sobreaviso ao abrir.', 'success');
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = shareableLink;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showAlert('Link copiado! Seus colegas poderão ver o sobreaviso ao abrir.', 'success');
+                    } catch (err) {
+                        showAlert('Erro ao copiar link.', 'info');
+                    }
+                    document.body.removeChild(textarea);
+                }
+            } else {
+                // In person mode, link functionality is not available
+                showAlert('Link compartilhável disponível apenas no modo "Buscar por Data".', 'info');
+            }
+        });
+        clearOutputBtn.addEventListener('click', () => {
+            dateSelect.value = '';
+            personSelect.value = '';
+            sobravisoOutput.textContent = '';
+            outputSection.classList.add('hidden');
+            
+            // Clear URL parameter
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.delete('date');
+            window.history.pushState({}, '', newUrl);
+            
+            showAlert('Seleção limpa!', 'success');
+        });
+
+        // Initialize app on load
+        initializeApp();
+    </script>
 </body>
 </html>

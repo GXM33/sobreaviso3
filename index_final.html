@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Sobreaviso DRV/DEIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f3f4f6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .tab-button:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .tab-button.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+            background-color: white;
+        }
+
+        .content {
+            display: none;
+            padding: 30px;
+            min-height: 300px;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .swap-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .swap-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .swap-item label {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .output-area {
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .output-area h3 {
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            resize: vertical;
+            background-color: white;
+            color: #1f2937;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+
+        .alert-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .alert-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📅 Gerador de Sobreaviso</h1>
+            <h2 style="font-size: 1.8em; font-weight: 300; margin-top: -10px;">DRV/DEIC</h2>
+            <p id="today-date"></p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab(0)">📅 Buscar por Data</button>
+            <button class="tab-button" onclick="switchTab(1)">👤 Buscar por Pessoa</button>
+            <button class="tab-button" onclick="switchTab(2)">🔄 Trocas</button>
+        </div>
+
+        <!-- Content -->
+        
+        <!-- Tab 1: Date Search -->
+        <div class="content active">
+            <div class="form-group">
+                <label for="date-select">Selecione a data:</label>
+                <select id="date-select" onchange="searchByDate()">
+                    <option value="">-- Escolha uma data --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tab 2: Person Search -->
+        <div class="content">
+            <div class="form-group">
+                <label for="person-select">Selecione uma pessoa:</label>
+                <select id="person-select" onchange="searchByPerson()">
+                    <option value="">-- Escolha uma pessoa --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tab 3: Swaps -->
+        <div class="content">
+            <div class="form-group">
+                <label for="swap-date-select">Selecione a data da troca:</label>
+                <select id="swap-date-select" onchange="loadSwapData()">
+                    <option value="">-- Escolha uma data --</option>
+                </select>
+            </div>
+            <div id="swap-info" class="alert alert-info hidden"></div>
+            <div id="swap-section" class="swap-section hidden"></div>
+            <button class="btn-primary generate-btn" onclick="generateSwaps()">📝 Gerar texto com trocas</button>
+        </div>
+
+        <!-- Output Area -->
+        <div class="output-area">
+            <h3>📋 Resultado</h3>
+            <textarea id="output-text" readonly></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div style="padding: 0 30px 30px;">
+            <div class="button-group">
+                <button class="btn-primary" onclick="copyText()">📋 Copiar Texto</button>
+                <button class="btn-success" onclick="sendWhatsApp()">💚 Enviar no WhatsApp</button>
+                <button class="btn-danger" onclick="clearAll()">🗑️ Limpar</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            🔒 <strong>Aplicação segura e protegida.</strong> Código não é acessível.
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DADOS
+        // ============================================
+        
+        const PEOPLE = [
+            { val: "Cau", label: "Insp. Acauã" },
+            { val: "Saraiva", label: "Esc. Anderson Saraiva" },
+            { val: "Brozoza", label: "Insp. Alexandre Brozoza" },
+            { val: "Cátia", label: "Esc. Cátia Fortunato" },
+            { val: "Cristiano", label: "Insp. Cristiano Soletti" },
+            { val: "César", label: "Esc. César da Costa" },
+            { val: "Dago", label: "Esc. Dagoberto O. das Virgens" },
+            { val: "Melo", label: "Insp. Edmilson Melo" },
+            { val: "Edna", label: "Insp. Edna Moraes" },
+            { val: "Piazza", label: "Esc. Fernanda Piazza" },
+            { val: "Gui Mello", label: "Insp. Guilherme Mello" },
+            { val: "Jeff", label: "Esc. Jefferson Antoniol" },
+            { val: "Juliana", label: "Insp. Juliana Tremper" },
+            { val: "Bona", label: "Insp. Juliano Bonacina" },
+            { val: "Luciana", label: "Esc. Luciana Bortoli" },
+            { val: "Loss", label: "Insp. Lucas Loss" },
+            { val: "Tais", label: "Insp. Tais Boesing" },
+            { val: "Teresinha", label: "Insp. Teresinha Carivali" },
+            { val: "Thiago", label: "Insp. Thiago Meireles" },
+            { val: "Thássia", label: "Insp. Thássia Guterres" },
+            { val: "Vanessa", label: "Insp. Vanessa Trindade" }
+        ];
+
+        const NAME_MAP = Object.fromEntries(PEOPLE.map(p => [p.val, p.label]));
+
+        const PHONE_MAP = {
+            "Cau": "(51) 986859065", "Piazza": "(51) 993605744", "Cristiano": "(51) 995659880",
+            "Teresinha": "(51) 999829606", "Thiago": "(79) 988080613", "César": "(51) 998911160",
+            "Vanessa": "(55) 984278960", "Bona": "(51) 989276060", "Gui Mello": "(51) 981354933",
+            "Tais": "(51) 980549435", "Jeff": "(24) 981002933", "Luciana": "(51) 993935552",
+            "Edna": "(53) 981339654", "Saraiva": "(51) 993879343", "Loss": "(51) 991055571",
+            "Brozoza": "(51) 996500506", "Dago": "(51) 999920066", "Thássia": "(51) 996499862",
+            "Juliana": "(51) 993337587", "Cátia": "(51) 985744501", "Melo": "(51) 983190815"
+        };
+
+        const SCHEDULE = {
+            "01/11/2025": ["Cristiano", "Vanessa", "Thiago"],
+            "02/11/2025": ["Cristiano", "Vanessa", "Thiago"],
+            "03/11/2025": ["Piazza", "César", "Vanessa"],
+            "04/11/2025": ["Bona", "Vanessa", "Saraiva"],
+            "05/11/2025": ["Dago", "Thássia", "Thiago"],
+            "06/11/2025": ["Jeff", "Teresinha", "Saraiva"],
+            "07/11/2025": ["Cristiano", "Teresinha", "Thiago"],
+            "08/11/2025": ["Jeff", "Juliana", "Tais"],
+            "09/11/2025": ["Jeff", "Luciana", "Edna"],
+            "10/11/2025": ["Gui Mello", "Bona", "Tais"],
+            "11/11/2025": ["Brozoza", "Loss", "Saraiva"],
+            "12/11/2025": ["Cau", "Luciana", "Edna"],
+            "13/11/2025": ["Melo", "Cátia", "Jeff"],
+            "14/11/2025": ["Piazza", "Bona", "Saraiva"],
+            "15/11/2025": ["Gui Mello", "Thássia", "Saraiva"],
+            "16/11/2025": ["Gui Mello", "Loss", "Saraiva"],
+            "17/11/2025": ["César", "Teresinha", "Jeff"],
+            "18/11/2025": ["Dago", "Cátia", "Edna"],
+            "19/11/2025": ["Jeff", "Thássia", "Saraiva"],
+            "20/11/2025": ["Cristiano", "Juliana", "Thiago"],
+            "21/11/2025": ["Gui Mello", "Melo", "Thiago"],
+            "22/11/2025": ["Brozoza", "Loss", "Thiago"],
+            "23/11/2025": ["Brozoza", "Loss", "Thiago"],
+            "24/11/2025": ["Cau", "Luciana", "Saraiva"],
+            "25/11/2025": ["Brozoza", "Loss", "Vanessa"],
+            "26/11/2025": ["Melo", "Vanessa", "Jeff"],
+            "27/11/2025": ["Piazza", "Gui Mello", "Tais"],
+            "28/11/2025": ["César", "Juliana", "Vanessa"],
+            "29/11/2025": ["Cau", "Luciana", "Edna"],
+            "30/11/2025": ["Cau", "Juliana", "Edna"],
+            "01/12/2025": ["Dago", "Cátia", ""],
+            "02/12/2025": ["Jeff", "Vanessa", ""],
+            "03/12/2025": ["Cristiano", "Juliana", ""],
+            "04/12/2025": ["Gui Mello", "Jeff", ""],
+            "05/12/2025": ["Brozoza", "Loss", ""],
+            "06/12/2025": ["Melo", "Thássia", ""],
+            "07/12/2025": ["Melo", "Thássia", ""],
+            "08/12/2025": ["Cau", "Luciana", ""],
+            "09/12/2025": ["Melo", "Thássia", ""],
+            "10/12/2025": ["Piazza", "Bona", ""],
+            "11/12/2025": ["César", "Teresinha", ""],
+            "12/12/2025": ["Dago", "Cátia", ""],
+            "13/12/2025": ["Piazza", "Bona", ""],
+            "14/12/2025": ["Piazza", "Bona", ""],
+            "15/12/2025": ["Jeff", "Vanessa", ""],
+            "16/12/2025": ["Cristiano", "Juliana", ""],
+            "17/12/2025": ["Gui Mello", "Teresinha", ""],
+            "18/12/2025": ["Brozoza", "Loss", ""],
+            "19/12/2025": ["Cau", "Luciana", ""],
+            "20/12/2025": ["César", "Teresinha", ""],
+            "21/12/2025": ["César", "Teresinha", ""],
+            "22/12/2025": ["Melo", "Thássia", ""],
+            "23/12/2025": ["Piazza", "Bona", ""],
+            "24/12/2025": ["César", "Teresinha", ""],
+            "25/12/2025": ["Dago", "Cátia", ""],
+            "26/12/2025": ["Jeff", "Vanessa", ""],
+            "27/12/2025": ["Dago", "Cátia", ""],
+            "28/12/2025": ["Dago", "Cátia", ""],
+            "29/12/2025": ["Cristiano", "Juliana", ""],
+            "30/12/2025": ["Gui Mello", "Brozoza", ""],
+            "31/12/2025": ["Brozoza", "Loss", ""]
+        };
+
+        const DATES = Object.keys(SCHEDULE).sort((a, b) => new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-')));
+
+        let swaps = {};
+
+        // ============================================
+        // FUNÇÕES AUXILIARES
+        // ============================================
+
+        function getDayOfWeek(dateStr) {
+            const [dia, mes, ano] = dateStr.split('/');
+            const date = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+            const days = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+            return days[date.getDay()];
+        }
+
+        function getTodayBrasilia() {
+            const now = new Date();
+            const offset = -3; // UTC-3
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const br = new Date(utc + 3600000 * offset);
+            const d = String(br.getDate()).padStart(2, '0');
+            const m = String(br.getMonth() + 1).padStart(2, '0');
+            const y = br.getFullYear();
+            return `${d}/${m}/${y}`;
+        }
+
+        function buildMessage(date, customSchedule = null, includeWeekday = false) {
+            const escala = customSchedule || SCHEDULE[date];
+            if (!escala) return "Nenhum sobreaviso encontrado para essa data ou seleção.";
+
+            const [sa01, sa02, saNac] = escala;
+            const weekdayStr = includeWeekday ? ` (${getDayOfWeek(date)})` : '';
+
+            let text = `*Sobreaviso DRV/DEIC*\nData: ${date}${weekdayStr}\n\n`;
+
+            if (NAME_MAP[sa01]) text += `${NAME_MAP[sa01]}\n${PHONE_MAP[sa01] || "-"}\n\n`;
+            if (NAME_MAP[sa02]) text += `${NAME_MAP[sa02]}\n${PHONE_MAP[sa02] || "-"}\n\n`;
+            if (saNac && NAME_MAP[saNac]) {
+                text += `NAC: ${NAME_MAP[saNac]}\n${PHONE_MAP[saNac] || "-"}\n\n`;
+            }
+
+            text += "Chefe de SI: Com. Bruna Caldeira\n(51) 99139-9403\n\nAutoridade Policial:\nDel. Jeiselaure de Souza\n(51) 99145-8919";
+
+            return text;
+        }
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.content');
+            
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        function searchByDate() {
+            const date = document.getElementById('date-select').value;
+            if (date) {
+                document.getElementById('output-text').value = buildMessage(date);
+            }
+        }
+
+        function searchByPerson() {
+            const person = document.getElementById('person-select').value;
+            if (!person) return;
+
+            let result = '';
+            let novCount = 0;
+            let decCount = 0;
+            let datesFound = [];
+
+            for (const date of DATES) {
+                if (SCHEDULE[date].includes(person)) {
+                    datesFound.push(date);
+                    if (date.includes("/11/")) novCount++;
+                    else if (date.includes("/12/")) decCount++;
+                }
+            }
+
+            if (datesFound.length === 0) {
+                result = "Nenhum sobreaviso encontrado para essa pessoa.";
+            } else {
+                result += `Novembro: ${novCount} sobreavisos\n`;
+                result += `Dezembro: ${decCount} sobreavisos\n\n`;
+                result += "════════════════════════════════════════\n\n";
+
+                datesFound.forEach((date, index) => {
+                    if (index > 0) result += "\n\n════════════════════════════════════════\n\n";
+                    result += buildMessage(date, undefined, true);
+                });
+            }
+
+            document.getElementById('output-text').value = result;
+        }
+
+        function loadSwapData() {
+            const date = document.getElementById('swap-date-select').value;
+            if (!date) {
+                document.getElementById('swap-section').classList.add('hidden');
+                document.getElementById('swap-info').classList.add('hidden');
+                return;
+            }
+
+            const escala = SCHEDULE[date];
+            const info = `Escala original para ${date}: ${escala.map((p, i) => `Posição ${i+1}: ${NAME_MAP[p] || '(vago)'}`).join(' | ')}`;
+            
+            document.getElementById('swap-info').textContent = info;
+            document.getElementById('swap-info').classList.remove('hidden');
+
+            let html = '';
+            for (let i = 0; i < 3; i++) {
+                const original = escala[i] || '';
+                const originalLabel = NAME_MAP[original] || 'Vago';
+                
+                html += `
+                    <div class="swap-item">
+                        <label><strong>Posição ${i+1}:</strong> ${originalLabel}</label>
+                        <select id="swap-${i}" onchange="updateSwap(${i}, this.value)">
+                            <option value="">--- Manter Original ---</option>
+                            ${PEOPLE.map(p => `<option value="${p.val}">${p.label}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }
+
+            document.getElementById('swap-section').innerHTML = html;
+            document.getElementById('swap-section').classList.remove('hidden');
+            swaps = {};
+        }
+
+        function updateSwap(index, value) {
+            if (value) {
+                swaps[index] = value;
+            } else {
+                delete swaps[index];
+            }
+        }
+
+        function generateSwaps() {
+            const date = document.getElementById('swap-date-select').value;
+            if (!date) {
+                alert('Selecione uma data primeiro!');
+                return;
+            }
+
+            const escala = [...SCHEDULE[date]];
+            for (const idx in swaps) {
+                escala[parseInt(idx)] = swaps[idx];
+            }
+
+            document.getElementById('output-text').value = buildMessage(date, escala);
+        }
+
+        function copyText() {
+            const text = document.getElementById('output-text');
+            text.select();
+            document.execCommand('copy');
+            alert('✅ Texto copiado para a área de transferência!');
+        }
+
+        function sendWhatsApp() {
+            const text = document.getElementById('output-text').value;
+            if (!text) {
+                alert('Gere um texto primeiro!');
+                return;
+            }
+            const encoded = encodeURIComponent(text);
+            window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        }
+
+        function clearAll() {
+            document.getElementById('output-text').value = '';
+            document.getElementById('date-select').value = '';
+            document.getElementById('person-select').value = '';
+            document.getElementById('swap-date-select').value = '';
+            document.getElementById('swap-section').classList.add('hidden');
+            document.getElementById('swap-info').classList.add('hidden');
+            swaps = {};
+        }
+
+        // ============================================
+        // INICIALIZAR
+        // ============================================
+
+        window.addEventListener('load', () => {
+            // Preencher data de hoje
+            const today = getTodayBrasilia();
+            document.getElementById('today-date').textContent = `Hoje: ${today} (${getDayOfWeek(today)})`;
+
+            // Preencher dropdown de datas
+            const dateSelect = document.getElementById('date-select');
+            DATES.forEach(date => {
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                if (date === today) option.selected = true;
+                dateSelect.appendChild(option);
+            });
+
+            // Auto-trigger busca de hoje
+            if (SCHEDULE[today]) {
+                document.getElementById('output-text').value = buildMessage(today);
+            }
+
+            // Preencher dropdown de pessoas
+            const personSelect = document.getElementById('person-select');
+            PEOPLE.forEach(person => {
+                const option = document.createElement('option');
+                option.value = person.val;
+                option.textContent = person.label;
+                personSelect.appendChild(option);
+            });
+
+            // Preencher dropdown de datas para trocas
+            const swapDateSelect = document.getElementById('swap-date-select');
+            DATES.forEach(date => {
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                swapDateSelect.appendChild(option);
+            });
+        });
+    </script>
+</body>
+</html>
